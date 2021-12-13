@@ -1,10 +1,11 @@
-pragma solidity ^0.5.0;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.0;
 
-import 'openzeppelin-solidity/contracts/utils/Address.sol';
-import 'openzeppelin-solidity/contracts/drafts/Counters.sol';
-import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
-import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
-import "./Oraclize.sol";
+import '@openzeppelin/contracts/utils/Address.sol';
+import '@openzeppelin/contracts/utils/Counters.sol';
+import '@openzeppelin/contracts/utils/Strings.sol';
+import '@openzeppelin/contracts/utils/math/SafeMath.sol';
+import '@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol';
 
 contract Ownable {
     //  TODO's
@@ -413,7 +414,7 @@ contract ERC721Enumerable is ERC165, ERC721 {
     }
 }
 
-contract ERC721Metadata is ERC721Enumerable, usingOraclize {
+contract ERC721Metadata is ERC721Enumerable {
     
     // TODO: Create private vars for token _name, _symbol, and _baseTokenURI (string)
 
@@ -444,10 +445,29 @@ contract ERC721Metadata is ERC721Enumerable, usingOraclize {
 
     // TODO: Create an internal function to set the tokenURI of a specified tokenId
     // It should be the _baseTokenURI + the tokenId in string form
-    // TIP #1: use strConcat() from the imported oraclizeAPI lib to set the complete token URI
-    // TIP #2: you can also use uint2str() to convert a uint to a string
-        // see https://github.com/oraclize/ethereum-api/blob/master/oraclizeAPI_0.5.sol for strConcat()
+    // use strConcat() to set the complete token URI
     // require the token exists before setting
+
+    // strConcat(_baseTokenURI, Strings.toString(_tokenId));
+
+    // function strConcat(string memory _a, string memory _b) internal pure returns (string memory _concatenatedString) {
+    //     bytes memory _ba = bytes(_a);
+    //     bytes memory _bb = bytes(_b);
+
+    //     string memory ab = new string(_ba.length + _bb.length);
+    //     bytes memory bab = bytes(ab);
+
+    //     uint k = 0;
+    //     uint i = 0;
+    //     for (i = 0; i < _ba.length; i++) {
+    //         bab[k++] = _ba[i];
+    //     }
+    //     for (i = 0; i < _bb.length; i++) {
+    //         bab[k++] = _bb[i];
+    //     }
+
+    //     return string(bab);
+    // }
 
 }
 
