@@ -8,26 +8,60 @@ import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 import '@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol';
 
 contract Ownable {
-    //  TODO's
-    //  1) create a private '_owner' variable of type address with a public getter function
-    //  2) create an internal constructor that sets the _owner var to the creater of the contract 
-    //  3) create an 'onlyOwner' modifier that throws if called by any account other than the owner.
-    //  4) fill out the transferOwnership function
-    //  5) create an event that emits anytime ownerShip is transfered (including in the constructor)
+    address private _owner;
+
+    event TransferOwnership(address indexed oldOwner, address indexed newOwner);
+
+    function owner() public view returns(address) {
+        return _owner;
+    }
+
+    constructor() internal {
+        _owner = msg.sender;
+        emit TransferOwnership(address(0), _owner);
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == _owner, "Caller must be owner");
+        _;
+    }
 
     function transferOwnership(address newOwner) public onlyOwner {
-        // TODO add functionality to transfer control of the contract to a newOwner.
-        // make sure the new owner is a real address
-
+        require(newOwner != address(0), "New owner must be a real address");
+        _owner = newOwner;
+        emit TransferOwnership(_owner, newOwner);
     }
 }
 
 //  TODO's: Create a Pausable contract that inherits from the Ownable contract
-//  1) create a private '_paused' variable of type bool
-//  2) create a public setter using the inherited onlyOwner modifier 
-//  3) create an internal constructor that sets the _paused variable to false
-//  4) create 'whenNotPaused' & 'paused' modifier that throws in the appropriate situation
 //  5) create a Paused & Unpaused event that emits the address that triggered the event
+
+contract Pausable is Ownable {
+    bool private _paused;
+
+    event Paused(address indexed pauser);
+    event Unpaused(address indexed unpauser);
+
+    function setPaused(bool value) public onlyOwner {
+        _paused = value;
+    }
+
+    constructor() internal {
+        _paused = false;
+    }
+
+    modifier whenNotPaused() {
+        require(_paused == false, "Contract must not be paused");
+        _;
+    }
+
+    modifier paused() {
+        require(_paused == true, "Contract must be paused");
+        _;
+    }
+
+
+}
 
 contract ERC165 {
     bytes4 private constant _INTERFACE_ID_ERC165 = 0x01ffc9a7;
