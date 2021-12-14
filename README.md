@@ -11,6 +11,9 @@ This project highlights the potential for blockchain technology to mitigate frau
 5. Migrate contracts: ``truffle > migrate --reset``
 6. Test contracts: ``truffle > test``
 
+
+## OpeanSea Marketplace Storefront
+
 ## Contract Addresses
 
 * [SquareVerifier](https://rinkeby.etherscan.io/address/0x98a64d1f89f9bcf7b83c0ccf6cfc4fe28ae722d8): `` 0x98a64d1f89f9bcf7b83c0ccf6cfc4fe28ae722d8 ``
