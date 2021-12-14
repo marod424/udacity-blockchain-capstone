@@ -15,6 +15,7 @@ interface IVerifier {
 
 
 contract SolnSquareVerifier is CustomERC721Token {
+    IVerifier private _verifier;
 
     struct Solution {
         uint256 _index;
@@ -22,34 +23,42 @@ contract SolnSquareVerifier is CustomERC721Token {
     }
 
     Solution[] private _solutions;
-    mapping(uint256 => bool) private _uniqueSolutions;
-    IVerifier private _verifier;
 
-    event SolutionAdded(Solution indexed solution);
+    mapping(uint256 => Solution) private _uniqueSolutions;
 
-    constructor(address _address, string memory _name, string memory _symbol) 
-        CustomERC721Token(_name, _symbol) 
+    event SolutionAdded(uint256 indexed _index, address indexed _address);
+
+    constructor(address verifierAddress, string memory name, string memory symbol) 
+        CustomERC721Token(name, symbol) 
     {
-        _verifier = IVerifier(_address);
+        _verifier = IVerifier(verifierAddress);
     }
 
-    function _addSolution(Solution memory solution) internal {
+    function addSolution(Solution memory solution) public {
+        uint256 index = solution._index;
+
         _solutions.push(solution);
-        _uniqueSolutions[solution._index] = true;
+        _uniqueSolutions[index] = solution;
 
-        emit SolutionAdded(solution);
+        emit SolutionAdded(index, solution._address);
     }
 
-    function mintVerifiedToken(uint256 tokenId) external {
-        require(!_uniqueSolutions[tokenId], "Solution has already been used");
-        // require(_verifier.verifyTx(a, b, c, input), "Verification failed");
+    function mintNFT(
+        uint256 tokenId,
+        uint[2] memory a, 
+        uint[2][2] memory b, 
+        uint[2] memory c, 
+        uint[2] memory input
+    ) external {
+        require(_uniqueSolutions[tokenId]._address == address(0), "Solution already exists");
+        require(_verifier.verifyTx(a, b, c, input), "Verification failed");
 
         Solution memory sol = Solution({
             _index: tokenId, 
             _address: msg.sender
         });
 
-        _addSolution(sol);
+        addSolution(sol);
         mint(msg.sender, tokenId);
     }
 }
