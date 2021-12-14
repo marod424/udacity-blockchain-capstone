@@ -186,8 +186,24 @@ contract SquareVerifier {
         return 0;
     }
     function verifyTx(
+            uint[2] memory a, 
+            uint[2][2] memory b,
+            uint[2] memory c,
+            uint[2] memory input
+        ) public view returns (bool r) 
+    {
+        Proof memory proof = Proof({
+            a: Pairing.G1Point(a[0], a[1]), 
+            b: Pairing.G2Point(b[0], b[1]), 
+            c: Pairing.G1Point(c[0], c[1])
+        });
+
+        return _verifyTx(proof, input);
+    }
+
+    function _verifyTx(
             Proof memory proof, uint[2] memory input
-        ) public view returns (bool r) {
+        ) internal view returns (bool r) {
         uint[] memory inputValues = new uint[](2);
         
         for(uint i = 0; i < input.length; i++){

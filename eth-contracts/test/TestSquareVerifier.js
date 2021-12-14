@@ -34,12 +34,12 @@ contract('TestSquareVerfier', async () => {
     });
 
     it('Test verification with correct proof', async () => {
-        const result = await contract.verifyTx(proof, inputs);
+        const result = await contract.verifyTx(proof.a, proof.b, proof.c, inputs);
         assert.equal(result, true);
     });
 
     it('Test verification with incorrect proof', async () => {
-        const result = await contract.verifyTx(proof, [1, 9]);
+        const result = await contract.verifyTx(proof.a, proof.b, proof.c, [1, 9]);
         assert.equal(result, false);
     });
 });

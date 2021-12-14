@@ -1,35 +1,58 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-// TODO define a contract call to the zokrates generated solidity contract <Verifier> or <renamedVerifier>
+import './ERC721Mintable.sol';
 
 
-
-// TODO define another contract named SolnSquareVerifier that inherits from your ERC721Mintable class
-
-
-
-// TODO define a solutions struct that can hold an index & an address
-
-
-// TODO define an array of the above struct
-
-
-// TODO define a mapping to store unique solutions submitted
+interface IVerifier {
+    function verifyTx(
+        uint[2] memory a, 
+        uint[2][2] memory b, 
+        uint[2] memory c, 
+        uint[2] memory input
+    ) external view returns (bool r);
+}
 
 
+contract SolnSquareVerifier is CustomERC721Token {
 
-// TODO Create an event to emit when a solution is added
+    struct Solution {
+        uint256 _index;
+        address _address;
+    }
 
+    Solution[] private _solutions;
+    mapping(uint256 => bool) private _uniqueSolutions;
+    IVerifier private _verifier;
 
+    event SolutionAdded(Solution indexed solution);
 
-// TODO Create a function to add the solutions to the array and emit the event
+    constructor(address _address, string memory _name, string memory _symbol) 
+        CustomERC721Token(_name, _symbol) 
+    {
+        _verifier = IVerifier(_address);
+    }
 
+    function _addSolution(Solution memory solution) internal {
+        _solutions.push(solution);
+        _uniqueSolutions[solution._index] = true;
 
+        emit SolutionAdded(solution);
+    }
 
-// TODO Create a function to mint new NFT only after the solution has been verified
-//  - make sure the solution is unique (has not been used before)
-//  - make sure you handle metadata as well as tokenSuplly
+    function mintVerifiedToken(uint256 tokenId) external {
+        require(!_uniqueSolutions[tokenId], "Solution has already been used");
+        // require(_verifier.verifyTx(a, b, c, input), "Verification failed");
+
+        Solution memory sol = Solution({
+            _index: tokenId, 
+            _address: msg.sender
+        });
+
+        _addSolution(sol);
+        mint(msg.sender, tokenId);
+    }
+}
 
   
 
