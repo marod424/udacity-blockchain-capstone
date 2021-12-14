@@ -61,4 +61,4 @@ contract('TestERC721Mintable', async (accounts) => {
             assert.equal(contractOwner, owner);
         });
     });
-})
+});
