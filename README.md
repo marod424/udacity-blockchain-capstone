@@ -12,7 +12,12 @@ This project highlights the potential for blockchain technology to mitigate frau
 6. Test contracts: ``truffle > test``
 
 
-## OpeanSea Marketplace Storefront
+## OpeanSea Marketplace
+ 
+* [Storefront](https://testnets.opensea.io/collection/0x-land-title): `` 0x Land Title ``
+* [Minter](https://testnets.opensea.io/0x40d19c7c172bc9be061ca9762d390d91ff495f1d): `` 0x40d19c7c172bc9be061ca9762d390d91ff495f1d ``
+* [Listing](https://testnets.opensea.io/bundles/0x-deeds-AcB): `` 0x Deeds ``
+* [Buyer](https://testnets.opensea.io/0xb2c6e05a37186df6aab0f30a24b07e5baf95691c): `` 0xb2c6e05a37186df6aab0f30a24b07e5baf95691c ``
 
 ## Contract Addresses
 
